@@ -1,0 +1,27 @@
+{
+  "name": "mysql-wrapped",
+  "version": "1.0.0",
+  "description": "A wrapper for MySQL on node to make querying a database as easy as possible",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/the-jonsey/mysql-wrapped.git"
+  },
+  "keywords": [
+    "MySQL",
+    "SQL",
+    "wrapper"
+  ],
+  "author": "jonsey",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/the-jonsey/mysql-wrapped/issues"
+  },
+  "homepage": "https://github.com/the-jonsey/mysql-wrapped#readme",
+  "dependencies": {
+    "mysql": "^2.16.0"
+  }
+}
