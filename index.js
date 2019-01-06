@@ -8,11 +8,8 @@ class Database {
     }
 
     meta(cback) {
-        console.log("hi");
-        console.log(this.conf);
         this.connectionPool.query("SHOW TABLES;", (error, results) => {
             if (error)
-                console.log(error);
             if (results !== undefined) {
                 results.forEach(table => {
                     this.tables[table["Tables_in_" + this.dbname]] = {};
@@ -91,17 +88,14 @@ class Query {
      * @param res - response object - optional
      */
     exec(cback, res) {
-        //console.log(this.toString());
         let callback = (error, results) => {
             if (error) {
-                console.log(error);
                 cback(false);
             }
             else
                 cback(results);
         };
         try {
-            console.log(db);
             if (this.queryParams !== null) {
                 db.connectionPool.query(this.toString(), this.queryParams, callback)
             }
