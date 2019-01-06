@@ -9,7 +9,9 @@ class Database {
 
     meta(cback) {
         this.connectionPool.query("SHOW TABLES;", (error, results) => {
-            if (error)
+            if (error) {
+                cback();
+            }
             if (results !== undefined) {
                 results.forEach(table => {
                     this.tables[table["Tables_in_" + this.dbname]] = {};
@@ -24,7 +26,6 @@ class Database {
                     });
                 });
             }
-            cback();
         });
     }
 }
@@ -328,12 +329,10 @@ module.exports = function(config, cback) {
         InvalidFieldError,
         Database: db,
     };
-    db.meta(() => {
-        setTimeout(() => {
+        db.meta(() => {
             Object.keys(db.tables).forEach(table => {
                 returning[table] = new Table(table, Object.keys(db.tables[table]));
             });
             cback(returning);
-        }, 1000);
-    });
+        });
 };
