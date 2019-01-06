@@ -1,12 +1,12 @@
-#MySQL-Wrapped
+# MySQL-Wrapped
 
-##Description
+## Description
 
 MySQL wrapped is a nodejs library built to make querying a database without any knowledge of sql easy,
 it depends on:
 - mysql
 
-##Setup
+## Setup
 To install this module, from the command line run
 
 `npm install --save mysql-wrapped`
@@ -32,18 +32,18 @@ mysqlWrapped({
 });
 ```
 
-##Usage
+## Usage
 
 mysql-wrapped has 3 levels of abstraction, and it can be used at any level, with the lowest level being the default mysql package, so in ascending levels of abstraction, it could be used like this
 
-##Level 1 - No abstraction
+### Level 1 - No abstraction
 
 this would be used in the same way as the mysql package, and most of the best documentation would be found at that package, specifically on connection pools,
 the way the connection pool is accessed is
 
 `mysql.Database.connectionPool`
 
-##Level 2 - Query generation
+### Level 2 - Query generation
 
 This level is where queries are generated, and can generate the 4 main types of query, which all have a common structure, with common functions
 
@@ -58,7 +58,7 @@ new mysql.QUERYTYPE().exec(
     //you place a callback in here, which returns your data
 )
 ```
-###SELECT
+#### SELECT
 
 To use SELECT statements with this library, you would do something along the lines of
 
@@ -77,7 +77,7 @@ join(
      */
 )
 ```
-###Update
+#### Update
 
 Update is very similar to the Select statement, the only difference being the constructor
 
@@ -90,7 +90,7 @@ new mysql.Update(
 )
 ```
 
-###Insert
+#### Insert
 For insert, the constructor is the same as for Update, so
 ```js
 new mysql.Insert(
@@ -101,10 +101,10 @@ new mysql.Insert(
 )
 ```
 
-###Delete
+#### Delete
 For insert, the constructor does not take any parameters
 
-###Common Functions
+#### Common Functions
 ```js
 new mysql.QUERY.table(
     //the name of the table to select from
@@ -125,7 +125,7 @@ new mysql.QUERY.table(
 )
 ```
 
-##Level 3 - Table generation + field checks
+### Level 3 - Table generation + field checks
 
 so for level 3, the library will generate an instance of a table class for every table it finds in your database, it will use this to check your parameters, to check the fields exist in the tables.
 
