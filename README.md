@@ -1,4 +1,4 @@
-# MySQL-Wrapped
+# MySQL-Rewrapped
 
 ## Description
 

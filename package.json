@@ -1,5 +1,5 @@
 {
-  "name": "mysql-wrapped",
+  "name": "mysql-rewrapped",
   "version": "1.0.0",
   "description": "A wrapper for MySQL on node to make querying a database as easy as possible",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/the-jonsey/mysql-wrapped.git"
+    "url": "git+https://github.com/the-jonsey/mysql-rewrapped.git"
   },
   "keywords": [
     "MySQL",
@@ -18,9 +18,9 @@
   "author": "jonsey",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/the-jonsey/mysql-wrapped/issues"
+    "url": "https://github.com/the-jonsey/mysql-rewrapped/issues"
   },
-  "homepage": "https://github.com/the-jonsey/mysql-wrapped#readme",
+  "homepage": "https://github.com/the-jonsey/mysql-rewrapped#readme",
   "dependencies": {
     "mysql": "^2.16.0"
   }
