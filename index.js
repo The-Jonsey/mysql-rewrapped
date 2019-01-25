@@ -257,19 +257,19 @@ class Table {
     }
 
     Select(fields) {
-        let passed = true;
+        let missingFields = [];
         if (fields && fields !== ["*"] && fields !== "*") {
             fields.forEach(field => {
                 if (field instanceof Object) {
                     field = field.name;
                 }
                 if (!this.fields.includes(field) && !field.includes("."))
-                    passed = false;
+                    missingFields.push(field);
                 else if (field.includes(".")) {
                     let table = field.split(".")[0];
                     let attr = field.split(".")[1];
                     if (!module.exports[table] || !module.exports[table].fields.includes(attr)) {
-                        passed = false;
+                        missingFields.push(field);
                     }
                 }
             });
@@ -277,8 +277,8 @@ class Table {
         else {
             fields = ["*"];
         }
-        if (!passed) {
-            throw new InvalidFieldError("Field not found in table");
+        if (missingFields.length > 0) {
+            throw new InvalidFieldError("Field(s) not found in table: " + missingFields);
         }
         else {
             return new Select(fields).table(this.name);
@@ -286,13 +286,13 @@ class Table {
     }
 
     Update(items) {
-        let passed = true;
+        let missingFields = [];
         Object.keys(items).forEach((field) => {
             if (!this.fields.includes(field))
-                passed = false;
+                missingFields.push(field);
         });
-        if (!passed) {
-            throw new InvalidFieldError("Field not found in table");
+        if (missingFields.length > 0) {
+            throw new InvalidFieldError("Field(s) not found in table: " + missingFields);
         }
         else {
             return new Update(items).table(this.name);
@@ -300,13 +300,13 @@ class Table {
     }
 
     Insert(items) {
-        let passed = true;
+        let missingFields = [];
         Object.keys(items).forEach((field) => {
             if (!this.fields.includes(field))
-                passed = false;
+                missingFields.push(field)
         });
-        if (!passed) {
-            throw new InvalidFieldError("Field not found in table");
+        if (missingFields.length > 0) {
+            throw new InvalidFieldError("Field(s) not found in table: " + missingFields);
         }
         else {
             return new Insert(items).table(this.name);
