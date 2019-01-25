@@ -329,12 +329,12 @@ module.exports = function(config, cback) {
         InvalidFieldError,
         Database: db,
     };
-    db.connectionPool.on('connection', function (connection) {
-        db.meta(() => {
-            Object.keys(db.tables).forEach(table => {
-                returning[table] = new Table(table, Object.keys(db.tables[table]));
-            });
-            cback(returning);
+
+    db.meta(() => {
+        Object.keys(db.tables).forEach(table => {
+            returning[table] = new Table(table, Object.keys(db.tables[table]));
         });
+        cback(returning);
     });
+
 };
