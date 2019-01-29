@@ -7,25 +7,37 @@ class Database {
         this.conf = conf;
     }
 
-    meta(cback) {
-        this.connectionPool.query("SHOW TABLES;", (error, results) => {
-            if (error) {
-                cback();
+    meta(cback, counter = 0) {
+        if (counter === 10) {
+            throw new ConnectionFailedError("The connection was not able to be established in a timely manner")
+        }
+        this.connectionPool.getConnection((err, conn) => {
+            if (err) {
+                setInterval(() => {
+                    this.meta(cback, counter + 1);
+                }, 500)
             }
-            if (results !== undefined) {
-                results.forEach(table => {
-                    this.tables[table["Tables_in_" + this.dbname]] = {};
-                });
-                Object.keys(this.tables).forEach((table) => {
-                    this.connectionPool.query("describe " + table, (error, results) => {
-                        results.forEach(col => {
-                            this.tables[table][col["Field"]] = col["Type"];
-                        });
-                        if (cback)
-                            cback();
+            this.connectionPool.query("SHOW TABLES;", (error, results) => {
+                if (error) {
+                    setInterval(() => {
+                        this.meta(cback, counter + 1);
+                    }, 500)
+                }
+                if (results !== undefined) {
+                    results.forEach(table => {
+                        this.tables[table["Tables_in_" + this.dbname]] = {};
                     });
-                });
-            }
+                    Object.keys(this.tables).forEach((table) => {
+                        this.connectionPool.query("describe " + table, (error, results) => {
+                            results.forEach(col => {
+                                this.tables[table][col["Field"]] = col["Type"];
+                            });
+                            if (cback)
+                                cback();
+                        });
+                    });
+                }
+            });
         });
     }
 }
@@ -250,6 +262,13 @@ class InvalidFieldError extends Error {
     }
 }
 
+class ConnectionFailedError extends Error {
+    constructor(args) {
+        super(args);
+        Error.captureStackTrace(this, ConnectionFailedError);
+    }
+}
+
 class Table {
     constructor(name, fields) {
         this.name = name;
@@ -327,6 +346,7 @@ module.exports = function(config, cback) {
         Update,
         Delete,
         InvalidFieldError,
+        ConnectionFailedError,
         Database: db,
     };
 
