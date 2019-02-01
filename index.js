@@ -8,20 +8,20 @@ class Database {
     }
 
     meta(cback, counter = 0) {
-        if (counter === 10) {
+        if (counter >= 600) {
             throw new ConnectionFailedError("The connection was not able to be established in a timely manner")
         }
         this.connectionPool.getConnection((err, conn) => {
             if (err) {
                 setInterval(() => {
                     this.meta(cback, counter + 1);
-                }, 500)
+                }, 50)
             }
             this.connectionPool.query("SHOW TABLES;", (error, results) => {
                 if (error) {
                     setInterval(() => {
                         this.meta(cback, counter + 1);
-                    }, 500)
+                    }, 50)
                 }
                 if (results !== undefined) {
                     results.forEach(table => {
