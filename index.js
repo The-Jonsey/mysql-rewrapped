@@ -9,7 +9,7 @@ class Database {
 
     meta(cback, counter = 0) {
         if (counter >= 600) {
-            throw new ConnectionFailedError("The connection was not able to be established in a timely manner")
+            cback(new ConnectionFailedError("The connection was not able to be established in a timely manner"));
         }
         this.connectionPool.getConnection((err, conn) => {
             if (err) {
@@ -350,7 +350,10 @@ module.exports = function(config, cback) {
         Database: db,
     };
 
-    db.meta(() => {
+    db.meta((excep) => {
+        if (excep) {
+            throw excep;
+        }
         Object.keys(db.tables).forEach(table => {
             returning[table] = new Table(table, Object.keys(db.tables[table]));
         });
