@@ -9,11 +9,11 @@ it depends on:
 ## Setup
 To install this module, from the command line run
 
-`npm install --save mysql-wrapped`
+`npm install --save mysql-rewrapped`
 
 to include this package in your software, include this in your source code
 
-`const mysql = require("mysql-wrapped");`
+`const mysql = require("mysql-rewrapped");`
 
 To initialise an instance of mysql-wrapped, you need to give it config in the form of a json object,
 as well as this, the initialisation is asynchronous, so you will need a callback e.g:

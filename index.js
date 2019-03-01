@@ -86,6 +86,9 @@ class Query {
                 statement = statement.substr(0, statement.length - 2);
                 statement += ") AND ";
             }
+            else if (params[item].op.toLowerCase() === "between") {
+                statement += item + " BETWEEN " + params[item].value[0] + " AND " + params[item].value[1] + " AND ";
+            }
             else {
                 throw "Invalid Comparison Operator";
             }
