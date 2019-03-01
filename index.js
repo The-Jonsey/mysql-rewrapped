@@ -87,7 +87,9 @@ class Query {
                 statement += ") AND ";
             }
             else if (params[item].op.toLowerCase() === "between") {
-                statement += item + " BETWEEN " + params[item].value[0] + " AND " + params[item].value[1] + " AND ";
+                statement += item + " BETWEEN ? AND ? AND ";
+                this.whereParams.push(params[item].value[0]);
+                this.whereParams.push(params[item].value[1]);
             }
             else {
                 throw "Invalid Comparison Operator";
