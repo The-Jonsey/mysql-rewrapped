@@ -52,7 +52,7 @@ class Query {
         this.whereStatement = null;
         this.whereParams = [];
         this.queryParams = [];
-        this.safeOperators = ["=", "<=>", "<>", "!=", ">", ">=", "<", "<=", "like"];
+        this.safeOperators = ["=", "<=>", "<>", "!=", ">", ">=", "<", "<=", "like", "between"];
     }
 
     /**
@@ -161,9 +161,6 @@ class Select extends Query {
      * @returns {Select}
      */
     join(params) {
-        if (params.length > 2) {
-            return false;
-        }
         let statement = "";
         params.forEach(item => {
             statement += "INNER JOIN " + item.target + " ON " + item.from + " = " + item.to + " " ;
