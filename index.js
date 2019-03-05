@@ -52,7 +52,7 @@ class Query {
         this.whereStatement = null;
         this.whereParams = [];
         this.queryParams = [];
-        this.safeOperators = ["=", "<=>", "<>", "!=", ">", ">=", "<", "<=", "like", "between"];
+        this.safeOperators = ["=", "<=>", "<>", "!=", ">", ">=", "<", "<=", "like"];
     }
 
     /**
