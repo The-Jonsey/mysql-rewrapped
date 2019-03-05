@@ -292,8 +292,14 @@ class Table {
                 else if (field.includes(".")) {
                     let table = field.split(".")[0];
                     let attr = field.split(".")[1];
-                    if (!module.exports[table] || !module.exports[table].fields.includes(attr)) {
-                        missingFields.push(field);
+                    if (table !== this.name) {
+                        if (module.exports[table] && !module.exports[table].fields.includes(attr)) {
+                            missingFields.push(field);
+                        }
+                    }
+                    else {
+                        if (!this.fields.includes(attr))
+                            missingFields.push(attr);
                     }
                 }
             });
