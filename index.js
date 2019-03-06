@@ -193,10 +193,11 @@ class Update extends Query {
             this.setStatement += item + " = ?, ";
             this.setParams.push(fields[item]);
         });
+        this.setStatement = this.setStatement.substr(0, this.setStatement.length - 2) + " ";
     }
 
     toString() {
-        return this.type + " " + this.tableName + " " + this.setStatement + (this.whereStatement !== null ? this.whereStatement : "");
+        return this.type + " " + this.tableName + " SET " + this.setStatement + (this.whereStatement !== null ? this.whereStatement : "");
     }
 
     exec(cback) {
