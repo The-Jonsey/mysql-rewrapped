@@ -169,8 +169,18 @@ class Select extends Query {
         return this;
     }
 
+    groupBy(items) {
+        this.groupItems = items.join(", ");
+        return this;
+    }
+
+    orderBy(items) {
+        this.orderItems = items.join(", ");
+        return this;
+    }
+
     toString() {
-        return this.type + " " + this.items + " FROM " + this.tableName + " " + (this.joinStatement !== null ? this.joinStatement + " " : "") + (this.whereStatement !== null ? this.whereStatement : "")
+        return this.type + " " + this.items + " FROM " + this.tableName + " " + (this.joinStatement !== null ? this.joinStatement + " " : "") + (this.whereStatement !== null ? this.whereStatement : "") + (this.groupItems ? " GROUP BY " + this.groupItems : "") + (this.orderItems ? " ORDER BY " + this.orderItems : "");
     }
 
     exec(cback) {
