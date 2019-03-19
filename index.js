@@ -136,6 +136,9 @@ class Select extends Query {
      *              - ["id", "firstname", "lastname"]
      *              - ["id", "firstname", {name: "lastname", as: "surname"}
      */
+
+    isDistinct = false;
+
     constructor(items) {
         super("SELECT");
         if (!items) {
@@ -155,15 +158,31 @@ class Select extends Query {
         this.joinStatement = null;
     }
 
+    distinct() {
+        this.isDistinct = true;
+    }
+
     /**
      *
-     * @param params join formatted as [{target: target table, from: field on main table, to: field on joining table}]
+     * @param params join formatted as [{target: target table, from: field on main table, to: field on joining table, type: type of join}]
      * @returns {Select}
      */
     join(params) {
+        let jointypes = ["INNER", "FULL OUTER", "LEFT", "RIGHT"];
         let statement = "";
         params.forEach(item => {
-            statement += "INNER JOIN " + item.target + " ON " + item.from + " = " + item.to + " " ;
+            if (item.type) {
+                if (jointypes.includes(item.type.toUpperCase())) {
+                    statement += item.type.toUpperCase();
+                }
+                else {
+                    return throw new InvalidJoinTypeError(item.type + " Is not a valid type of join");
+                }
+            }
+            else {
+                statement += "INNER"
+            }
+            statement += " JOIN " + item.target + " ON " + item.from + " = " + item.to + " " ;
         });
         this.joinStatement = statement;
         return this;
@@ -180,7 +199,7 @@ class Select extends Query {
     }
 
     toString() {
-        return this.type + " " + this.items + " FROM " + this.tableName + " " + (this.joinStatement !== null ? this.joinStatement + " " : "") + (this.whereStatement !== null ? this.whereStatement : "") + (this.groupItems ? " GROUP BY " + this.groupItems : "") + (this.orderItems ? " ORDER BY " + this.orderItems : "");
+        return this.type + (this.isDistinct ? " DISTINCT " : "") + " " + this.items + " FROM " + this.tableName + " " + (this.joinStatement !== null ? this.joinStatement + " " : "") + (this.whereStatement !== null ? this.whereStatement : "") + (this.groupItems ? " GROUP BY " + this.groupItems : "") + (this.orderItems ? " ORDER BY " + this.orderItems : "");
     }
 
     exec(cback) {
@@ -282,6 +301,13 @@ class ConnectionFailedError extends Error {
     }
 }
 
+class InvalidJoinTypeError extends Error {
+    constructor(args) {
+        super(args);
+        Error.captureStackTrace(this, ConnectionFailedError);
+    }
+}
+
 class Table {
     constructor(name, fields) {
         this.name = name;
@@ -366,6 +392,7 @@ module.exports = function(config, cback) {
         Delete,
         InvalidFieldError,
         ConnectionFailedError,
+        InvalidJoinTypeError,
         Database: db,
     };
 

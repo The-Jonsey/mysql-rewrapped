@@ -73,10 +73,13 @@ The select statement has a special function called join, which is used as shown 
 join(
     /*
     Joining one table onto another, currently only INNER JOIN supported, usage as shown:
-    [{target: target table, from: field on main table, to: field on joining table}]
+    [{type: type of join. target: target table, from: field on main table, to: field on joining table}]
      */
 )
 ```
+
+The select statement has another function called distinct, which when called will make the query only select distinct fields, there are no parameters
+
 #### Update
 
 Update is very similar to the Select statement, the only difference being the constructor
@@ -152,11 +155,13 @@ Users.select("*")
     .join(
         [
             {
+                type: "INNER",
                 target: "UserGroups",
                 from: "Users.id",
                 to: "UserGroups.userid"
             },
             {
+                type: "LEFT",
                 target: "Groups",
                 from: "UserGroups.groupid",
                 to: "Groups.id"
@@ -169,7 +174,7 @@ Users.select("*")
 ```
 
 
-#Planned Features
+# Planned Features
 
 - Left and right joins, as well as outer joins
 - ALTER statement
