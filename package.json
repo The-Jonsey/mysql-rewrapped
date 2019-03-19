@@ -1,6 +1,6 @@
 {
   "name": "mysql-rewrapped",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A wrapper for MySQL on node to make querying a database as easy as possible",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,8 @@
   "keywords": [
     "MySQL",
     "SQL",
-    "wrapper"
+    "wrapper",
+	"mysql-wrapper"
   ],
   "author": "jonsey",
   "license": "GPL-3.0",

@@ -19,9 +19,9 @@ To initialise an instance of mysql-wrapped, you need to give it config in the fo
 as well as this, the initialisation is asynchronous, so you will need a callback e.g:
 
 ```js
-const mysqlWrapped = require("mysql-wrapped");
+const mysqlRewrapped = require("mysql-rewrapped");
 let mysql;
-mysqlWrapped({
+mysqlRewrapped({
  "host": "127.0.0.1",
  "user": "root",
  "password": "password",
@@ -172,10 +172,3 @@ Users.select("*")
     }
 );
 ```
-
-
-# Planned Features
-
-- Left and right joins, as well as outer joins
-- ALTER statement
-- CREATE TABLE statement
