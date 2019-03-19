@@ -160,6 +160,7 @@ class Select extends Query {
 
     distinct() {
         this.isDistinct = true;
+        return this;
     }
 
     /**
