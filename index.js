@@ -24,16 +24,26 @@ class Database {
                     }, 50)
                 }
                 if (results !== undefined) {
+                    if (results.length === 0) {
+                        if (cback) {
+                            return cback();
+                        }
+                    }
                     results.forEach(table => {
                         this.tables[table["Tables_in_" + this.dbname]] = {};
                     });
+                    let len = Object.keys(this.tables).length;
+                    let counter = 0;
                     Object.keys(this.tables).forEach((table) => {
                         this.connectionPool.query("describe " + table, (error, results) => {
                             results.forEach(col => {
                                 this.tables[table][col["Field"]] = col["Type"];
                             });
-                            if (cback)
+                            counter++;
+                            if (counter === len) {
+                                if (cback)
                                 cback();
+                            }
                         });
                     });
                 }
@@ -137,8 +147,6 @@ class Select extends Query {
      *              - ["id", "firstname", {name: "lastname", as: "surname"}
      */
 
-    isDistinct = false;
-
     constructor(items) {
         super("SELECT");
         if (!items) {
@@ -177,7 +185,7 @@ class Select extends Query {
                     statement += item.type.toUpperCase();
                 }
                 else {
-                    return throw new InvalidJoinTypeError(item.type + " Is not a valid type of join");
+                    throw new InvalidJoinTypeError(item.type + " Is not a valid type of join");
                 }
             }
             else {
@@ -194,13 +202,14 @@ class Select extends Query {
         return this;
     }
 
-    orderBy(items) {
+    orderBy(items, asc) {
         this.orderItems = items.join(", ");
+        this.orderAsc = asc;
         return this;
     }
 
     toString() {
-        return this.type + (this.isDistinct ? " DISTINCT " : "") + " " + this.items + " FROM " + this.tableName + " " + (this.joinStatement !== null ? this.joinStatement + " " : "") + (this.whereStatement !== null ? this.whereStatement : "") + (this.groupItems ? " GROUP BY " + this.groupItems : "") + (this.orderItems ? " ORDER BY " + this.orderItems : "");
+        return this.type + (this.isDistinct ? " DISTINCT " : "") + " " + this.items + (this.tableName ? " FROM " + this.tableName : "") + " " + (this.joinStatement !== null ? this.joinStatement + " " : "") + (this.whereStatement !== null ? this.whereStatement : "") + (this.groupItems ? " GROUP BY " + this.groupItems : "") + (this.orderItems ? " ORDER BY " + this.orderItems + (this.orderAsc ? " DESC" : "ASC") : "");
     }
 
     exec(cback) {
@@ -401,9 +410,11 @@ module.exports = function(config, cback) {
         if (excep) {
             throw excep;
         }
-        Object.keys(db.tables).forEach(table => {
-            returning[table] = new Table(table, Object.keys(db.tables[table]));
-        });
+        if (Object.keys(db.tables).length > 0) {
+            Object.keys(db.tables).forEach(table => {
+                returning[table] = new Table(table, Object.keys(db.tables[table]));
+            });
+        }
         cback(returning);
     });
 

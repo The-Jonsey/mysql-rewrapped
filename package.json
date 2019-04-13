@@ -4,7 +4,7 @@
   "description": "A wrapper for MySQL on node to make querying a database as easy as possible",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/mocha/bin/mocha --exit"
   },
   "repository": {
     "type": "git",
@@ -14,7 +14,7 @@
     "MySQL",
     "SQL",
     "wrapper",
-	"mysql-wrapper"
+    "mysql-wrapper"
   ],
   "author": "jonsey",
   "license": "GPL-3.0",
@@ -24,5 +24,8 @@
   "homepage": "https://github.com/the-jonsey/mysql-rewrapped#readme",
   "dependencies": {
     "mysql": "^2.16.0"
+  },
+  "devDependencies": {
+    "mocha": "^6.1.3"
   }
 }
