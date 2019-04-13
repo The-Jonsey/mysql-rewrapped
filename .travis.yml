@@ -1,8 +1,8 @@
-language: node
+language: node_js
+node_js:
+  - "stable"
 services:
-  mysql
+  - mysql
 before_install:
   - mysql -e 'CREATE DATABASE Test; GRANT ALL PRIVILEGES ON Test.* TO "node"@"localhost" IDENTIFIED BY "test"; FLUSH PRIVILEGES;'
   - mysql -u node -ptest Test < test/db.sql
-script:
-  - npm test

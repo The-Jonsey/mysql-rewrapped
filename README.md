@@ -1,5 +1,7 @@
 # MySQL-Rewrapped
 
+[![Build Status](https://travis-ci.com/The-Jonsey/mysql-rewrapped.svg?branch=master)](https://travis-ci.com/The-Jonsey/mysql-rewrapped)
+
 ## Description
 
 MySQL wrapped is a nodejs library built to make querying a database without any knowledge of sql easy,
