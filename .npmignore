@@ -2,3 +2,5 @@ node_modules/
 .idea/
 .github/
 .gitignore
+test/
+.vscode/

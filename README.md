@@ -9,6 +9,7 @@ it depends on:
 - mysql
 
 ## Setup
+
 To install this module, from the command line run
 
 `npm install --save mysql-rewrapped`
@@ -74,7 +75,7 @@ The select statement has a special function called join, which is used as shown 
 ```js
 join(
     /*
-    Joining one table onto another, currently only INNER JOIN supported, usage as shown:
+    Joining one table onto another, usage as shown:
     [{type: type of join. target: target table, from: field on main table, to: field on joining table}]
      */
 )

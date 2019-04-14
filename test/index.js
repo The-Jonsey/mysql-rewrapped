@@ -113,6 +113,9 @@ describe("MySQL-Rewrapped tests", function() {
                 });
             });
         });
+        it("Invalid column", function() {
+            assert.throws(function() {mysql.Users.Select(["Address"])}, mysql.InvalidFieldError);
+        });
         it("Test Join", function(done) {
             mysql.UserGroups.Select(["Users.firstname", "Users.lastname", "Groups.Name"])
                 .join([
@@ -145,19 +148,46 @@ describe("MySQL-Rewrapped tests", function() {
         });
 
         describe("Test Update", function() {
-
+            it("Without Where", function(done) {
+                mysql.Users.Update({firstname: "John"}).exec(() => {
+                    mysql.Users.Select().exec(data => {
+                        data.forEach(row => {
+                            assert.equal(row.firstname, "John");
+                        });
+                        done();
+                    });
+                });
+            });
+            it("With Where", function(done) {
+                mysql.Users.Update({lastname: "Doe"}).where({id: {value: 1, op: "="}}).exec(() => {
+                    mysql.Users.Select().where({id: {value: 1, op: "="}}).exec(data => {
+                        assert.equal(data[0].lastname, "Doe");
+                        done();
+                    });
+                });
+            });
         });
         describe("Test Insert", function() {
-
+            it("Insert", function(done) {
+                mysql.Users.Insert({firstname: "Geoff", lastname: "Goldblum"}).exec(data => {
+                    assert.notEqual(data, false);
+                    done();
+                });
+            });
         });
         describe("Test Delete", function() {
-            it("Delete", function(done) {
-                let Delete = mysql.UserGroups.Delete();
-                //console.log(Delete.toString());
-                Delete.exec(data => {
-                    console.log(data);
+            it("Without Where", function(done) {
+                mysql.UserGroups.Delete().exec(data => {
                     mysql.UserGroups.Select().exec(data => {
                         assert.equal(data.length, 0);
+                        done();
+                    });
+                });
+            });
+            it("With Where", function(done) {
+                mysql.UserGroups.Delete().where({userid: {value: 1, op: "="}}).exec(data => {
+                    mysql.UserGroups.Select().exec(data => {
+                        assert.equal(data.length, 49);
                         done();
                     });
                 });
