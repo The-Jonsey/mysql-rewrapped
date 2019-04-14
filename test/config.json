@@ -3,5 +3,6 @@
     "user": "node",
     "password": "test",
     "database": "Test",
-    "connectionLimit": 10
+    "connectionLimit": 10,
+    "multipleStatements": true
 }

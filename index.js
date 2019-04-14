@@ -113,9 +113,8 @@ class Query {
     /**
      * Executes the query
      * @param cback - callback function
-     * @param res - response object - optional
      */
-    exec(cback, res) {
+    exec(cback) {
         let callback = (error, results) => {
             if (error) {
                 cback(false);
@@ -131,10 +130,7 @@ class Query {
                 db.connectionPool.query(this.toString(), callback)
         }
         catch(e) {
-            if (res)
-                res.send(e);
-            else
-                throw e;
+            throw e;
         }
     }
 }
@@ -209,7 +205,7 @@ class Select extends Query {
     }
 
     toString() {
-        return this.type + (this.isDistinct ? " DISTINCT " : "") + " " + this.items + (this.tableName ? " FROM " + this.tableName : "") + " " + (this.joinStatement !== null ? this.joinStatement + " " : "") + (this.whereStatement !== null ? this.whereStatement : "") + (this.groupItems ? " GROUP BY " + this.groupItems : "") + (this.orderItems ? " ORDER BY " + this.orderItems + (this.orderAsc ? " DESC" : "ASC") : "");
+        return this.type + (this.isDistinct ? " DISTINCT " : "") + " " + this.items + (this.tableName ? " FROM " + this.tableName : "") + " " + (this.joinStatement !== null ? this.joinStatement + " " : "") + (this.whereStatement !== null ? this.whereStatement : "") + (this.groupItems ? " GROUP BY " + this.groupItems : "") + (this.orderItems ? " ORDER BY " + this.orderItems + (this.orderAsc ? " DESC" : " ASC") : "");
     }
 
     exec(cback) {
@@ -288,7 +284,7 @@ class Delete extends Query {
     }
 
     toString() {
-        return "DELETE FROM " + this.tableName + (this.whereStatement !== null ? this.whereStatement : "");
+        return "DELETE FROM " + this.tableName +  (this.whereStatement !== null ? " " + this.whereStatement : "") + ";";
     }
 
     exec(cback) {
