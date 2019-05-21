@@ -1,6 +1,6 @@
 # MySQL-Rewrapped
 
-[![Build Status](https://travis-ci.com/The-Jonsey/mysql-rewrapped.svg?branch=master)](https://travis-ci.com/The-Jonsey/mysql-rewrapped)
+[![Build Status](https://img.shields.io/travis/com/the-jonsey/mysql-rewrapped/master.svg?style=flat-square)](https://travis-ci.com/The-Jonsey/mysql-rewrapped)
 
 ## Description
 
