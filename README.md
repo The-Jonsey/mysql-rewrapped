@@ -4,7 +4,7 @@
 ![GitHub](https://img.shields.io/github/license/the-jonsey/mysql-rewrapped.svg?style=flat-square)
 [![npm](https://img.shields.io/npm/dt/mysql-rewrapped.svg?style=flat-square)](https://www.npmjs.com/package/mysql-rewrapped)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/mysql-rewrapped.svg?style=flat-square)
-
+![npm](https://img.shields.io/npm/v/mysql-rewrapped.svg?style=flat-square)
 ## Description
 MySQL wrapped is a nodejs library built to make querying a database without any knowledge of sql easy,
 it depends on:
