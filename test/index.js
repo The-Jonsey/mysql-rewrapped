@@ -1,6 +1,8 @@
 const fs = require("fs");
 const mysqlRewrapped = require("../index.js");
-const assert = require("assert");
+const assert = require("assertthat");
+let mocha = require('mocha');
+let describe = mocha.describe;
 let conf = JSON.parse(fs.readFileSync("./test/config.json"));
 let sql = fs.readFileSync("./test/db.sql", "utf8").replace(/\n/g, "");
 let mysql;
@@ -19,11 +21,11 @@ describe("MySQL-Rewrapped tests", function() {
 
     describe("Tests the MySql Object returned from MySQL rewrapped on creation", function() {
         it("Checks tables are returned", function() {
-            assert.equal(mysql.Database.tables instanceof Object, true);
+            assert.that(mysql.Database.tables).is.instanceOf(Object);
         });
         it("Checks connection to database", function(done) {
             new mysql.Select(["1 = 1"]).exec((data) => {
-                assert.notEqual(data.length, 0);
+                assert.that(data.length).is.greaterThan(0);
                 done();
             })
         });
@@ -31,90 +33,90 @@ describe("MySQL-Rewrapped tests", function() {
     describe("Test Select", function() {
         it("Simple Select", function(done) {
             mysql.Users.Select().exec(data => {
-                assert.notEqual(data.length, 0);
-                assert.equal(data[0].firstname, "John");
+                assert.that(data.length).is.greaterThan(0);
+                assert.that(data[0].firstname).is.equalTo("John");
                 done()
             });
         });
         describe("Test Where", function() {
             it("=", function(done) {
                 mysql.Users.Select().where({firstname: {op: "=", value: "John"}}).exec(data => {
-                    assert.notEqual(data.length, 0);
-                    assert.equal(data[0].firstname, "John");
+                    assert.that(data.length).is.greaterThan(0);
+                    assert.that(data[0].firstname).is.equalTo("John");
                     done()
                 });
             });
             it("<=>", function(done) {
                 mysql.Users.Select().where({firstname: {op: "<=>", value: "John"}}).exec(data => {
-                    assert.notEqual(data.length, 0);
-                    assert.equal(data[0].firstname, "John");
+                    assert.that(data.length).is.greaterThan(0);
+                    assert.that(data[0].firstname).is.equalTo("John");
                     done()
                 });
             });
             it("<>", function(done) {
                 mysql.Users.Select().where({firstname: {op: "<>", value: "John"}}).exec(data => {
-                    assert.equal(data.length, 49);
+                    assert.that(data.length).is.equalTo(49);
                     done()
                 });
             });
             it("!=", function(done) {
                 mysql.Users.Select().where({firstname: {op: "!=", value: "John"}}).exec(data => {
-                    assert.equal(data.length, 49);
+                    assert.that(data.length).is.equalTo(49);
                     done()
                 });
             });
             it(">", function(done) {
                 mysql.Users.Select().where({id: {op: ">", value: 0}}).exec(data => {
-                    assert.equal(data.length, 50);
-                    assert.equal(data[0].firstname, "John");
+                    assert.that(data.length).is.equalTo(50);
+                    assert.that(data[0].firstname, "John");
                     done()
                 });
             });
             it(">=", function(done) {
                 mysql.Users.Select().where({id: {op: ">=", value: 1}}).exec(data => {
-                    assert.equal(data.length, 50);
-                    assert.equal(data[0].firstname, "John");
+                    assert.that(data.length).is.equalTo(50);
+                    assert.that(data[0].firstname).is.equalTo("John");
                     done()
                 });
             });
             it("<", function(done) {
                 mysql.Users.Select().where({id: {op: "<", value: 2}}).exec(data => {
-                    assert.equal(data.length, 1);
-                    assert.equal(data[0].firstname, "John");
+                    assert.that(data.length).is.equalTo(1);
+                    assert.that(data[0].firstname).is.equalTo("John");
                     done()
                 });
             });
             it("<=", function(done) {
                 mysql.Users.Select().where({id: {op: "<=", value: 1}}).exec(data => {
-                    assert.equal(data.length, 1);
-                    assert.equal(data[0].firstname, "John");
+                    assert.that(data.length).is.equalTo(1);
+                    assert.that(data[0].firstname).is.equalTo("John");
                     done()
                 });
             });
             it("LIKE", function(done) {
                 mysql.Users.Select().where({firstname: {op: "LIKE", value: "%oh%"}}).exec(data => {
-                    assert.equal(data.length, 1);
-                    assert.equal(data[0].firstname, "John");
+                    assert.that(data.length).is.equalTo(1);
+                    assert.that(data[0].firstname).is.equalTo("John");
                     done()
                 });
             });
             it("IN", function(done) {
                 mysql.Users.Select().where({firstname: {op: "IN", value: ["John", "Fred"]}}).exec(data => {
-                    assert.equal(data.length, 1);
-                    assert.equal(data[0].firstname, "John");
+                    assert.that(data.length).is.equalTo(1);
+                    assert.that(data[0].firstname).is.equalTo("John");
                     done()
                 });
             });
             it("BETWEEN", function(done) {
                 mysql.Users.Select().where({id: {op: "BETWEEN", value: [0, 2]}}).exec(data => {
-                    assert.equal(data.length, 2);
-                    assert.equal(data[0].firstname, "John");
+                    assert.that(data.length).is.equalTo(2);
+                    assert.that(data[0].firstname).is.equalTo("John");
                     done()
                 });
             });
         });
         it("Invalid column", function() {
-            assert.throws(function() {mysql.Users.Select(["Address"])}, mysql.InvalidFieldError);
+            assert.that(function() {mysql.Users.Select(["Address"])}).is.throwing();
         });
         it("Test Join", function(done) {
             mysql.UserGroups.Select(["Users.firstname", "Users.lastname", "Groups.Name"])
@@ -122,17 +124,17 @@ describe("MySQL-Rewrapped tests", function() {
                     {target: "Users", from: "UserGroups.userid", to: "Users.id"},
                     {target: "Groups", from: "UserGroups.groupid", to: "Groups.id"}
             ]).exec(data => {
-                assert.equal(data.length, 50);
-                assert.equal(data[0].firstname, "John");
-                assert.equal(data[0].lastname, "Smith");
-                assert.equal(data[0].Name, "Admin");
+                assert.that(data.length).is.equalTo(50);
+                assert.that(data[0].firstname).is.equalTo("John");
+                assert.that(data[0].lastname).is.equalTo("Smith");
+                assert.that(data[0].Name).is.equalTo("Admin");
                 done();
             });
         });
         it("Test Order By", function(done) {
             mysql.Users.Select().orderBy(["id"], true).exec(data => {
-                assert.equal(data.length, 50);
-                assert.equal(data[0].id, 50);
+                assert.that(data.length).is.equalTo(50);
+                assert.that(data[0].id).is.equalTo(50);
                 done();
             });
         });
@@ -152,7 +154,7 @@ describe("MySQL-Rewrapped tests", function() {
                 mysql.Users.Update({firstname: "John"}).exec(() => {
                     mysql.Users.Select().exec(data => {
                         data.forEach(row => {
-                            assert.equal(row.firstname, "John");
+                            assert.that(row.firstname).is.equalTo("John");
                         });
                         done();
                     });
@@ -161,7 +163,7 @@ describe("MySQL-Rewrapped tests", function() {
             it("With Where", function(done) {
                 mysql.Users.Update({lastname: "Doe"}).where({id: {value: 1, op: "="}}).exec(() => {
                     mysql.Users.Select().where({id: {value: 1, op: "="}}).exec(data => {
-                        assert.equal(data[0].lastname, "Doe");
+                        assert.that(data[0].lastname).is.equalTo("Doe");
                         done();
                     });
                 });
@@ -170,7 +172,7 @@ describe("MySQL-Rewrapped tests", function() {
         describe("Test Insert", function() {
             it("Insert", function(done) {
                 mysql.Users.Insert({firstname: "Geoff", lastname: "Goldblum"}).exec(data => {
-                    assert.notEqual(data, false);
+                    assert.that(data).is.not.falsy();
                     done();
                 });
             });
@@ -179,7 +181,7 @@ describe("MySQL-Rewrapped tests", function() {
             it("Without Where", function(done) {
                 mysql.UserGroups.Delete().exec(data => {
                     mysql.UserGroups.Select().exec(data => {
-                        assert.equal(data.length, 0);
+                        assert.that(data.length).is.equalTo(0);
                         done();
                     });
                 });
@@ -187,7 +189,7 @@ describe("MySQL-Rewrapped tests", function() {
             it("With Where", function(done) {
                 mysql.UserGroups.Delete().where({userid: {value: 1, op: "="}}).exec(data => {
                     mysql.UserGroups.Select().exec(data => {
-                        assert.equal(data.length, 49);
+                        assert.that(data.length).is.equalTo(49);
                         done();
                     });
                 });

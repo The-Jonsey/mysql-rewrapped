@@ -77,14 +77,14 @@ class Query {
 
     /**
      *
-     * @param params formatted as {fieldname: {value: value, op: operator}}
+     * @param params formatted as {fieldname: {value: value, op: operator, or: boolean}}
      * @returns {Query}
      */
     where(params) {
         let statement = "WHERE ";
         Object.keys(params).forEach((item) => {
             if (this.safeOperators.includes(params[item].op.toLowerCase())) {
-                statement += item + ' ' + params[item].op + " ? AND ";
+                statement += item + ' ' + params[item].op + " ? ";
                 this.whereParams.push(params[item].value);
             }
             else if (params[item].op.toLowerCase() === "in") {
@@ -94,18 +94,19 @@ class Query {
                     this.whereParams.push(val);
                 });
                 statement = statement.substr(0, statement.length - 2);
-                statement += ") AND ";
+                statement += ") ";
             }
             else if (params[item].op.toLowerCase() === "between") {
-                statement += item + " BETWEEN ? AND ? AND ";
+                statement += item + " BETWEEN ? AND ? ";
                 this.whereParams.push(params[item].value[0]);
                 this.whereParams.push(params[item].value[1]);
             }
             else {
                 throw "Invalid Comparison Operator";
             }
+            statement += params[item].or ? "OR " : "AND "
         });
-        statement = statement.substr(0, statement.length - 5);
+        statement = statement.substr(0, statement.length - (params[Object.keys(params).pop()] ? 4 : 5));
         this.whereStatement = statement;
         return this;
     }
