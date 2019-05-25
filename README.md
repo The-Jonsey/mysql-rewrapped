@@ -121,10 +121,11 @@ new mysql.QUERY.table(
     Filtering the table, done by a json object as shown:
     {
         fieldname: {
-            value: value, op: operator
+            value: value, op: operator, or: boolean
         }
     }
     where the valid operators are "=", "<=>", "<>", "!=", ">", ">=", "<", "<=", "like"
+    and the or value indicates whether the where after is `and` or an `or`
      */
 ).exec(
     /*
@@ -154,7 +155,8 @@ Users.select("*")
         {groupname:
             {
                 value: "Admin",
-                op: "="
+                op: "=",
+                or: false
             }
         })
     .join(
