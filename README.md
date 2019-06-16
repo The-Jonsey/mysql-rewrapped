@@ -118,14 +118,23 @@ new mysql.QUERY.table(
     //the name of the table to select from
 ).where(
     /*
-    Filtering the table, done by a json object as shown:
-    {
-        fieldname: {
-            value: value, op: operator, or: boolean
-        }
-    }
-    where the valid operators are "=", "<=>", "<>", "!=", ">", ">=", "<", "<=", "like"
-    and the or value indicates whether the where after is `and` or an `or`
+    Filtering the table done as shown:
+    fieldname: the name of the field - string,
+    value: the value to search by - string / array
+    operator - string, operators are "=", "<=>", "<>", "!=", ">", ">=", "<", "<=", "like"
+    can only be used to start the where, can't be used multiple times in a query
+     */
+).orWhere(
+    /*
+    fieldname: the name of the field - string,
+    value: the value to search by - string / array
+    operator - string, operators are "=", "<=>", "<>", "!=", ">", ">=", "<", "<=", "like"
+     */
+).andWhere(
+    /*
+    fieldname: the name of the field - string,
+    value: the value to search by - string / array
+    operator - string, operators are "=", "<=>", "<>", "!=", ">", ">=", "<", "<=", "like"
      */
 ).exec(
     /*
@@ -151,14 +160,7 @@ in actual use the code would look like this
 
 ```js
 Users.select("*")
-    .where(
-        {groupname:
-            {
-                value: "Admin",
-                op: "=",
-                or: false
-            }
-        })
+    .where("groupname", "Admin", "=")
     .join(
         [
             {
