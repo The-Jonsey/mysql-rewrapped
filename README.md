@@ -6,7 +6,7 @@
 ![npm bundle size](https://img.shields.io/bundlephobia/min/mysql-rewrapped.svg?style=flat-square)
 ![npm](https://img.shields.io/npm/v/mysql-rewrapped.svg?style=flat-square)
 
-#WARNING
+# WARNING
 The where function has changed since version 1.2.6, make sure to read [Common Functions](#common-functions) to see how the where function now works
 
 ## Description
