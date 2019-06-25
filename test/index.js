@@ -1,11 +1,12 @@
 const fs = require("fs");
-const mysqlRewrapped = require("../index.js");
+const mysqlRewrapped = require("../lib/index.js");
 const assert = require("assertthat");
 let mocha = require('mocha');
 let describe = mocha.describe;
 let conf = JSON.parse(fs.readFileSync("./test/config.json"));
 let sql = fs.readFileSync("./test/db.sql", "utf8").replace(/\n/g, "");
 let mysql;
+
 
 describe("MySQL-Rewrapped tests", function() {
     before(function(done) {

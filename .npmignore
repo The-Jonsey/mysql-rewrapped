@@ -5,3 +5,7 @@ node_modules/
 test/
 .vscode/
 .travis.yml
+src/
+tsconfig.json
+tslint.json
+.prettierrc
