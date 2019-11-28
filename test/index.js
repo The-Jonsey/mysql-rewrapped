@@ -16,7 +16,7 @@ describe("MySQL-Rewrapped tests", function() {
         connectionPool.query(sql, (err, res) => {
             mysqlRewrapped(conf, (db) => {
                 mysql = db;
-                //this.timeout(1000000000);
+                this.timeout(1000000000);
                 if (!doneCalled) {
                     doneCalled = true;
                     done();
