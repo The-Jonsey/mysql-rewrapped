@@ -1,5 +1,6 @@
 const fs = require("fs");
 const mysqlRewrapped = require("../lib/index.js");
+const mySQL = require("mysql");
 const assert = require("assertthat");
 let mocha = require('mocha');
 let describe = mocha.describe;
@@ -10,16 +11,17 @@ let mysql;
 
 describe("MySQL-Rewrapped tests", function() {
     before(function(done) {
+        let connectionPool = mySQL.createPool(conf);
         let doneCalled = false;
-        mysqlRewrapped(conf, (db) => {
-            mysql = db;
-            this.timeout(1000000000);
-            if (!doneCalled) {
-                doneCalled = true;
-                mysql.Database.connectionPool.query(sql, (err, res) => {
+        connectionPool.query(sql, (err, res) => {
+            mysqlRewrapped(conf, (db) => {
+                mysql = db;
+                //this.timeout(1000000000);
+                if (!doneCalled) {
+                    doneCalled = true;
                     done();
-                });
-            }
+                }
+            });
         });
     });
 
