@@ -13,9 +13,12 @@ describe("MySQL-Rewrapped tests", function() {
         let doneCalled = false;
         mysqlRewrapped(conf, (db) => {
             mysql = db;
+            this.timeout(1000000000);
             if (!doneCalled) {
                 doneCalled = true;
-                done();
+                mysql.Database.connectionPool.query(sql, (err, res) => {
+                    done();
+                });
             }
         });
     });
