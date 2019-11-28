@@ -4,15 +4,6 @@ on: [push]
 
 jobs:
   build:
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_PASSWORD: password
-          MYSQL_USER: node
-          MYSQL_DATABASE: Test
-        ports:
-        - 3306:3306
 
     runs-on: ubuntu-latest
 
@@ -21,6 +12,14 @@ jobs:
         node-version: [8.x, 10.x, 12.x]
 
     steps:
+    - name: Shutdown Ubuntu MySQL (SUDO)
+      run: sudo service mysql stop
+    - name: Setup MySQL
+      uses: mirromutth/mysql-action@v1.1
+      with:
+        mysql password: test
+        mysql user: node
+        mysql database: Test
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
