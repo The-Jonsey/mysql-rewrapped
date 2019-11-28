@@ -1,12 +1,6 @@
 name: Node CI
 
-on: 
-  push:
-    branches:
-    - master
-  pull_request:
-    branches:
-    - master
+on: [push]
 
 jobs:
   build:
@@ -15,9 +9,19 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x]
+        node-version: [8.x]
 
     steps:
+    - name: Shutdown Ubuntu MySQL (SUDO)
+      run: sudo service mysql stop
+    - name: Setup MySQL
+      uses: samin/mysql-action@v1.3
+      with:
+        mysql version: 5.7
+        mysql password: test
+        mysql user: node
+        mysql database: Test
+        host port: 13306
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
