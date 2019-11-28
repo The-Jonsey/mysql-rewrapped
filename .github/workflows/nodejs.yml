@@ -12,7 +12,7 @@ jobs:
           MYSQL_USER: node
           MYSQL_DATABASE: Test
         ports:
-        - 3306
+        - 3306:3306
 
     runs-on: ubuntu-latest
 
