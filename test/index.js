@@ -10,12 +10,20 @@ let mysql;
 
 
 describe("MySQL-Rewrapped tests", function() {
-    before(function(done) {
+    before(function(done, fail) {
         let connectionPool = mySQL.createPool(conf);
         let doneCalled = false;
         this.timeout(1000000000);
+        console.log("A");
         connectionPool.query(sql, (err, res) => {
+            console.log("B");
+            if (err) {
+                console.log(err);
+                fail();
+            }
+            console.log("C");
             mysqlRewrapped(conf, (db) => {
+                console.log("D");
                 mysql = db;
                 if (!doneCalled) {
                     doneCalled = true;
