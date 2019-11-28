@@ -20,7 +20,7 @@ jobs:
         mysql version: 5.7
         mysql password: test
         mysql user: node
-        mysql database: Tes
+        mysql database: Test
         host port: 13306
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
